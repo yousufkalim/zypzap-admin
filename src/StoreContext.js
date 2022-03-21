@@ -22,6 +22,7 @@ export function StoreProvider({ children }) {
     token: "",
     user: {},
     articles: [],
+    newsletters: [],
   });
 
   const updateStore = (data) => {

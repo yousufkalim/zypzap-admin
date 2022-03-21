@@ -18,6 +18,7 @@
 import Index from "views/Index.js";
 import Articles from "views/articles/Articles";
 import Construction from "views/Construction";
+import Newsletters from "views/newsletters/Newsletters";
 import Profile from "views/Profile.js";
 import Maps from "views/Maps.js";
 import Register from "views/Register.js";
@@ -26,15 +27,15 @@ import Tables from "views/Tables.js";
 import Icons from "views/Icons.js";
 
 var routes = [
+  // {
+  //   path: "/index",
+  //   name: "Dashboard",
+  //   icon: "ni ni-tv-2 text-primary",
+  //   component: Index,
+  //   layout: "/admin",
+  // },
   {
     path: "/index",
-    name: "Dashboard",
-    icon: "ni ni-tv-2 text-primary",
-    component: Index,
-    layout: "/admin",
-  },
-  {
-    path: "/articles",
     name: "Articles",
     icon: "ni ni-single-copy-04 text-red",
     component: Articles,
@@ -48,23 +49,31 @@ var routes = [
     layout: "/admin",
   },
   {
-    path: "/creators",
-    name: "Creators",
-    icon: "ni ni-pin-3 text-orange",
-    component: Construction,
+    path: "/newsletters/all",
+    name: "Newsletters",
+    icon: "ni ni-email-83 text-blue",
+    component: Newsletters,
     layout: "/admin",
   },
+  {
+    path: "/newsletters/creator",
+    name: "Creators",
+    icon: "ni ni-camera-compact text-orange",
+    component: Newsletters,
+    layout: "/admin",
+  },
+  {
+    path: "/newsletters/user",
+    name: "Users",
+    icon: "ni ni-single-02 text-red",
+    component: Newsletters,
+    layout: "/admin",
+  },
+
   {
     path: "/user-profile",
     name: "User Profile",
-    icon: "ni ni-single-02 text-yellow",
-    component: Construction,
-    layout: "/admin",
-  },
-  {
-    path: "/users",
-    name: "Users",
-    icon: "ni ni-bullet-list-67 text-red",
+    icon: "ni ni-circle-08 text-yellow",
     component: Construction,
     layout: "/admin",
   },
