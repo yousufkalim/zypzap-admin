@@ -64,7 +64,7 @@ var routes = [
   },
   {
     path: "/newsletters/user",
-    name: "Users",
+    name: "Gamers",
     icon: "ni ni-single-02 text-red",
     component: Newsletters,
     layout: "/admin",

@@ -19,7 +19,7 @@
 import { useState, useEffect } from "react";
 import api from "api";
 import { Store, UpdateStore } from "StoreContext";
-import { Card, CardHeader, Table, Container, Row } from "reactstrap";
+import { Card, CardHeader, Table, Button, Container, Row } from "reactstrap";
 // core components
 import Header from "components/Headers/Header.js";
 
@@ -52,9 +52,18 @@ const Newsletters = () => {
               <CardHeader className="border-0">
                 <div className="d-flex justify-content-between ">
                   <h3 className="mb-0" style={{ textTransform: "capitalize" }}>
-                    {page} Newsletters
+                    {page === "all" ? "Newsletters" : page + "s"}
                   </h3>
                 </div>
+                {/* <Button
+                  color="primary"
+                  href="#pablo"
+                  onClick={handleFilter}
+                  size="md"
+                >
+                  <i className="ni ni-fat-add"></i>
+                  Add Article
+                </Button> */}
               </CardHeader>
               <Table className="align-items-center table-flush" responsive>
                 <thead className="thead-light">
@@ -71,7 +80,7 @@ const Newsletters = () => {
                       return (
                         <tr>
                           <td>{newsletter.email}</td>
-                          <td>{newsletter.type}</td>
+                          <td>{newsletter.tester ? "Tester" : "User"}</td>
                           <td>{newsletter.createdAt}</td>
                         </tr>
                       );
