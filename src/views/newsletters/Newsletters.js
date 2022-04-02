@@ -121,7 +121,13 @@ const Newsletters = () => {
                       return (
                         <tr>
                           <td>{newsletter.email}</td>
-                          <td>{newsletter.tester ? "Tester" : "Newsletter"}</td>
+                          <td style={{ textTransform: "capitalize" }}>
+                            {newsletter.tester
+                              ? "Tester"
+                              : page === "all"
+                              ? "Newsletter"
+                              : page}
+                          </td>
                           <td>
                             {new Date(newsletter.createdAt).toDateString()}
                           </td>
