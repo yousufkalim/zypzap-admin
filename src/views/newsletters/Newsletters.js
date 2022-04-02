@@ -91,8 +91,12 @@ const Newsletters = () => {
                       <DropdownItem name="tester" onClick={handleFiler}>
                         Beta Testers
                       </DropdownItem>
-                      <DropdownItem name="newsletter" onClick={handleFiler}>
-                        Newsletters
+                      <DropdownItem
+                        name="newsletter"
+                        style={{ textTransform: "capitalize" }}
+                        onClick={handleFiler}
+                      >
+                        {page === "all" ? "Newsletters" : page + "s"}
                       </DropdownItem>
                     </DropdownMenu>
                   </UncontrolledDropdown>
