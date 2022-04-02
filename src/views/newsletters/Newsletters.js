@@ -19,12 +19,24 @@
 import { useState, useEffect } from "react";
 import api from "api";
 import { Store, UpdateStore } from "StoreContext";
-import { Card, CardHeader, Table, Button, Container, Row } from "reactstrap";
+import {
+  Card,
+  CardHeader,
+  Table,
+  Button,
+  Container,
+  Row,
+  DropdownMenu,
+  DropdownToggle,
+  DropdownItem,
+  UncontrolledDropdown,
+} from "reactstrap";
 // core components
 import Header from "components/Headers/Header.js";
 
 const Newsletters = () => {
   let [page] = useState(window.location.pathname.split("/").pop());
+  let [filter, setFilter] = useState("all");
   const { newsletters } = Store();
   const updateStore = UpdateStore();
 
@@ -38,6 +50,10 @@ const Newsletters = () => {
     if (data) {
       updateStore({ newsletters: data.newsletters });
     }
+  };
+
+  const handleFiler = (e) => {
+    setFilter(e.target.name);
   };
 
   return (
@@ -54,16 +70,33 @@ const Newsletters = () => {
                   <h3 className="mb-0" style={{ textTransform: "capitalize" }}>
                     {page === "all" ? "Newsletters" : page + "s"}
                   </h3>
+                  <UncontrolledDropdown>
+                    <DropdownToggle
+                      color="primary"
+                      name
+                      href="#pablo"
+                      role="button"
+                      caret
+                      size="md"
+                      style={{
+                        textTransform: "capitalize",
+                      }}
+                    >
+                      {filter === "all" ? "Filter by type" : filter + "s"}
+                    </DropdownToggle>
+                    <DropdownMenu>
+                      <DropdownItem name="all" onClick={handleFiler}>
+                        All
+                      </DropdownItem>
+                      <DropdownItem name="tester" onClick={handleFiler}>
+                        Beta Testers
+                      </DropdownItem>
+                      <DropdownItem name="newsletter" onClick={handleFiler}>
+                        Newsletters
+                      </DropdownItem>
+                    </DropdownMenu>
+                  </UncontrolledDropdown>
                 </div>
-                {/* <Button
-                  color="primary"
-                  href="#pablo"
-                  onClick={handleFilter}
-                  size="md"
-                >
-                  <i className="ni ni-fat-add"></i>
-                  Add Article
-                </Button> */}
               </CardHeader>
               <Table className="align-items-center table-flush" responsive>
                 <thead className="thead-light">
@@ -75,13 +108,23 @@ const Newsletters = () => {
                 </thead>
                 <tbody>
                   {newsletters
-                    .filter((a) => a.type === page)
+                    .filter((a) => {
+                      if (filter === "all") {
+                        return a.type === page;
+                      } else if (filter === "tester") {
+                        return a.type === page && a.tester === true;
+                      } else if (filter === "newsletter") {
+                        return a.type === page && a.tester === false;
+                      }
+                    })
                     .map((newsletter) => {
                       return (
                         <tr>
                           <td>{newsletter.email}</td>
-                          <td>{newsletter.tester ? "Tester" : "User"}</td>
-                          <td>{newsletter.createdAt}</td>
+                          <td>{newsletter.tester ? "Tester" : "Newsletter"}</td>
+                          <td>
+                            {new Date(newsletter.createdAt).toDateString()}
+                          </td>
                         </tr>
                       );
                     })}
