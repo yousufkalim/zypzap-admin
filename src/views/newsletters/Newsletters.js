@@ -81,6 +81,8 @@ const Newsletters = () => {
                             return a.type == "all";
                           } else if (page === "creator") {
                             return a.type === "creator";
+                          } else {
+                            return a;
                           }
                         })}
                         myHeader={myHeader}

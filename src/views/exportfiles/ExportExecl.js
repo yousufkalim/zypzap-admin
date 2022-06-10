@@ -45,7 +45,7 @@ const ExportExecl = ({ Users, myHeader }) => {
         console.log("users for export ", user);
         return {
           Email: user.email,
-          Type: user.type,
+          Type: user?.type ? user.type : user?.role ? user?.role : "",
           "SUBSCRIBED At": new Date(user.createdAt).toLocaleString()
         };
       });
@@ -70,7 +70,7 @@ const ExportExecl = ({ Users, myHeader }) => {
         size="md"
         disabled={loading}
       >
-        {loading ? "Chargement en cours" : "Exporter excel"}
+        {loading ? "Chargement en cours" : "Export excel"}
       </Button>
     </div>
   );
