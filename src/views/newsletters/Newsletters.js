@@ -19,6 +19,7 @@
 import { useState, useEffect } from "react";
 import api from "api";
 import { Store, UpdateStore } from "StoreContext";
+import ExportExecl from "views/exportfiles/ExportExecl.js";
 import {
   Card,
   CardHeader,
@@ -29,7 +30,7 @@ import {
   DropdownMenu,
   DropdownToggle,
   DropdownItem,
-  UncontrolledDropdown,
+  UncontrolledDropdown
 } from "reactstrap";
 // core components
 import Header from "components/Headers/Header.js";
@@ -55,7 +56,8 @@ const Newsletters = () => {
   const handleFiler = (e) => {
     setFilter(e.target.name);
   };
-
+  const myHeader = ["Email", "Type", "SUBSCRIBED At"];
+  console.log("page is ", page);
   return (
     <>
       <Header />
@@ -70,20 +72,35 @@ const Newsletters = () => {
                   <h3 className="mb-0" style={{ textTransform: "capitalize" }}>
                     {page === "all" ? "Newsletters" : page + "s"}
                   </h3>
+
                   <UncontrolledDropdown>
-                    <DropdownToggle
-                      color="primary"
-                      name
-                      href="#pablo"
-                      role="button"
-                      caret
-                      size="md"
-                      style={{
-                        textTransform: "capitalize",
-                      }}
-                    >
-                      {filter === "all" ? "Filter by type" : filter + "s"}
-                    </DropdownToggle>
+                    <div style={{ display: "flex" }}>
+                      <ExportExecl
+                        Users={newsletters.filter((a) => {
+                          if (page === "all") {
+                            return a.type == "all";
+                          } else if (page === "creator") {
+                            return a.type === "creator";
+                          } else {
+                            return a;
+                          }
+                        })}
+                        myHeader={myHeader}
+                      />
+                      <DropdownToggle
+                        color="primary"
+                        name
+                        href="#pablo"
+                        role="button"
+                        caret
+                        size="md"
+                        style={{
+                          textTransform: "capitalize"
+                        }}
+                      >
+                        {filter === "all" ? "Filter by type" : filter + "s"}
+                      </DropdownToggle>
+                    </div>
                     <DropdownMenu>
                       <DropdownItem name="all" onClick={handleFiler}>
                         All
@@ -102,6 +119,7 @@ const Newsletters = () => {
                   </UncontrolledDropdown>
                 </div>
               </CardHeader>
+              {console.log("data", newsletters)}
               <Table className="align-items-center table-flush" responsive>
                 <thead className="thead-light">
                   <tr>

@@ -19,6 +19,7 @@ import Index from "views/Index.js";
 import Articles from "views/articles/Articles";
 import Construction from "views/Construction";
 import Newsletters from "views/newsletters/Newsletters";
+import AllUsers from "views/AllUsers";
 import Profile from "views/Profile.js";
 import Maps from "views/Maps.js";
 import Register from "views/Register.js";
@@ -39,35 +40,42 @@ var routes = [
     name: "Articles",
     icon: "ni ni-single-copy-04 text-red",
     component: Articles,
-    layout: "/admin",
+    layout: "/admin"
   },
   {
     path: "/admins",
     name: "Admins",
     icon: "ni ni-planet text-blue",
     component: Construction,
-    layout: "/admin",
+    layout: "/admin"
   },
   {
     path: "/newsletters/all",
     name: "Newsletters",
     icon: "ni ni-email-83 text-blue",
     component: Newsletters,
-    layout: "/admin",
+    layout: "/admin"
   },
   {
     path: "/newsletters/creator",
     name: "Creators",
     icon: "ni ni-camera-compact text-orange",
     component: Newsletters,
-    layout: "/admin",
+    layout: "/admin"
   },
   {
     path: "/newsletters/user",
     name: "Gamers",
     icon: "ni ni-single-02 text-red",
     component: Newsletters,
-    layout: "/admin",
+    layout: "/admin"
+  },
+  {
+    path: "/allUsers",
+    name: "All Users",
+    icon: "ni ni-single-02 text-red",
+    component: AllUsers,
+    layout: "/admin"
   },
 
   {
@@ -75,21 +83,21 @@ var routes = [
     name: "User Profile",
     icon: "ni ni-circle-08 text-yellow",
     component: Construction,
-    layout: "/admin",
+    layout: "/admin"
   },
   {
     path: "/register",
     name: "Register",
     icon: "ni ni-key-25 text-info",
     component: Register,
-    layout: "/auth",
+    layout: "/auth"
   },
   {
     path: "/login",
     name: "Login",
     icon: "ni ni-circle-08 text-pink",
     component: Login,
-    layout: "/auth",
-  },
+    layout: "/auth"
+  }
 ];
 export default routes;
