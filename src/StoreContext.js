@@ -24,7 +24,9 @@ export function StoreProvider({ children }) {
     articles: [],
     users: [],
     creators: [],
+    admins: [],
     newsletters: [],
+    admin: {},
   });
 
   const updateStore = (data) => {

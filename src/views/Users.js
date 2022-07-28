@@ -35,7 +35,7 @@ import {
 // core components
 import Header from 'components/Headers/Header.js';
 
-const AllUsers = () => {
+const Users = () => {
   let [page] = useState(window.location.pathname.split('/').pop());
   let [filter, setFilter] = useState('all');
   const { users } = Store();
@@ -57,7 +57,6 @@ const AllUsers = () => {
     setFilter(e.target.name);
   };
   const myHeader = ['Email', 'Type', 'SUBSCRIBED At'];
-  console.log('page is ', page);
 
   return (
     <>
@@ -71,7 +70,7 @@ const AllUsers = () => {
               <CardHeader className="border-0">
                 <div className="d-flex justify-content-between ">
                   <h3 className="mb-0" style={{ textTransform: 'capitalize' }}>
-                    All Users
+                    Users
                   </h3>
 
                   <UncontrolledDropdown>
@@ -123,6 +122,8 @@ const AllUsers = () => {
                     <th scope="col">Email</th>
                     <th scope="col">Status</th>
                     <th scope="col">Created At</th>
+                    <th></th>
+                    <th></th>
                   </tr>
                 </thead>
                 <tbody>
@@ -143,6 +144,30 @@ const AllUsers = () => {
                               {/* <td>{user.status}</td> */}
                               <td>Active</td>
                               <td>{new Date(user.createdAt).toDateString()}</td>
+
+                              <td>
+                                <button
+                                  type="button"
+                                  className="btn active btn-default"
+                                  data-toggle="button"
+                                  aria-pressed="true"
+                                >
+                                  <i class="fa fa-ban fa-warning" aria-hidden="true">
+                                    {'   '}
+                                  </i>
+                                  &nbsp; Suspend
+                                </button>
+                              </td>
+                              <td>
+                                <button
+                                  type="button"
+                                  className="btn active btn-danger"
+                                  data-toggle="button"
+                                  aria-pressed="true"
+                                >
+                                  <i class="fa fa-trash" aria-hidden="true"></i> &nbsp; Ban
+                                </button>
+                              </td>
                             </tr>
                           );
                         })
@@ -212,4 +237,4 @@ const AllUsers = () => {
   );
 };
 
-export default AllUsers;
+export default Users;

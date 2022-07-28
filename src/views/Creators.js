@@ -48,7 +48,6 @@ const Creators = () => {
 
   const getCreators = async () => {
     const data = await api('get', '/users');
-    console.log('DATA', data);
     if (data) {
       updateStore({
         creators: data.filter(function (r) {
@@ -62,7 +61,6 @@ const Creators = () => {
     setFilter(e.target.name);
   };
   const myHeader = ['Email', 'Type', 'SUBSCRIBED At'];
-  console.log('page is ', page);
 
   return (
     <>
@@ -76,7 +74,7 @@ const Creators = () => {
               <CardHeader className="border-0">
                 <div className="d-flex justify-content-between ">
                   <h3 className="mb-0" style={{ textTransform: 'capitalize' }}>
-                    All Creators
+                    Creators
                   </h3>
 
                   <UncontrolledDropdown>
@@ -127,7 +125,10 @@ const Creators = () => {
                     <th scope="col">ID</th>
                     <th scope="col">Email</th>
                     <th scope="col">Status</th>
+
                     <th scope="col">Created At</th>
+                    <th></th>
+                    <th></th>
                   </tr>
                 </thead>
                 <tbody>
@@ -146,6 +147,30 @@ const Creators = () => {
                               {/* <td>{creator.status}</td> */}
                               <td>Active</td>
                               <td>{new Date(creator.createdAt).toDateString()}</td>
+
+                              <td>
+                                <button
+                                  type="button"
+                                  className="btn active btn-default"
+                                  data-toggle="button"
+                                  aria-pressed="true"
+                                >
+                                  <i class="fa fa-ban fa-warning" aria-hidden="true">
+                                    {'   '}
+                                  </i>
+                                  &nbsp; Suspend
+                                </button>
+                              </td>
+                              <td>
+                                <button
+                                  type="button"
+                                  className="btn active btn-danger"
+                                  data-toggle="button"
+                                  aria-pressed="true"
+                                >
+                                  <i class="fa fa-trash" aria-hidden="true"></i> &nbsp; Ban
+                                </button>
+                              </td>
                             </tr>
                           );
                         })

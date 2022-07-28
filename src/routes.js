@@ -19,7 +19,7 @@ import Index from 'views/Index.js';
 import Articles from 'views/articles/Articles';
 import Construction from 'views/Construction';
 import Newsletters from 'views/newsletters/Newsletters';
-import AllUsers from 'views/AllUsers';
+import Users from 'views/Users';
 import Profile from 'views/Profile.js';
 import Maps from 'views/Maps.js';
 import Register from 'views/Register.js';
@@ -27,15 +27,15 @@ import Login from 'views/Login.js';
 import Tables from 'views/Tables.js';
 import Icons from 'views/Icons.js';
 import Creators from './views/Creators';
+import Admins from './views/Admins';
+import BasicInfo from './components/BasicInfo';
 
 var routes = [
-  // {
-  //   path: "/index",
-  //   name: "Dashboard",
-  //   icon: "ni ni-tv-2 text-primary",
-  //   component: Index,
-  //   layout: "/admin",
-  // },
+  {
+    path: '/index',
+    component: Construction,
+    layout: '/admin',
+  },
   // {
   //   path: "/index",
   //   name: "Articles",
@@ -43,31 +43,26 @@ var routes = [
   //   component: Articles,
   //   layout: "/admin"
   // },
+
   {
     path: '/admins',
     name: 'Admins',
-    icon: 'ni ni-planet text-blue',
-    component: Construction,
+    icon: 'ni ni-planet text-teal',
+    component: Admins,
     layout: '/admin',
   },
+
   {
-    path: '/newsletters/all',
-    name: 'Newsletters',
-    icon: 'ni ni-email-83 text-blue',
-    component: Newsletters,
-    layout: '/admin',
-  },
-  {
-    path: '/allUsers',
-    name: 'All Users',
+    path: '/Users',
+    name: 'Users',
     icon: 'ni ni-single-02 text-red',
-    component: AllUsers,
+    component: Users,
     layout: '/admin',
   },
   {
     path: '/creators',
     name: 'Creators',
-    icon: 'ni ni-camera-compact text-orange',
+    icon: 'ni ni-satisfied text-green',
     component: Creators,
     layout: '/admin',
   },
@@ -87,10 +82,17 @@ var routes = [
   //   layout: '/admin',
   // },
   {
+    path: '/newsletters/all',
+    name: 'Newsletters',
+    icon: 'ni ni-email-83 text-blue',
+    component: Newsletters,
+    layout: '/admin',
+  },
+  {
     path: '/user-profile',
     name: 'User Profile',
     icon: 'ni ni-circle-08 text-yellow',
-    component: Construction,
+    component: BasicInfo,
     layout: '/admin',
   },
   {
