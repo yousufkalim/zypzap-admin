@@ -16,10 +16,10 @@
 
 */
 // reactstrap components
-import { useState, useEffect } from "react";
-import api from "api";
-import { Store, UpdateStore } from "StoreContext";
-import ExportExecl from "views/exportfiles/ExportExecl.js";
+import { useState, useEffect } from 'react';
+import api from 'api';
+import { Store, UpdateStore } from 'StoreContext';
+import ExportExecl from 'views/exportfiles/ExportExecl.js';
 import {
   Card,
   CardHeader,
@@ -30,37 +30,34 @@ import {
   DropdownMenu,
   DropdownToggle,
   DropdownItem,
-  UncontrolledDropdown
-} from "reactstrap";
+  UncontrolledDropdown,
+} from 'reactstrap';
 // core components
-import Header from "components/Headers/Header.js";
+import Header from 'components/Headers/Header.js';
 
 const AllUsers = () => {
-  let [page] = useState(window.location.pathname.split("/").pop());
-  let [filter, setFilter] = useState("all");
-  const { newsletters } = Store();
+  let [page] = useState(window.location.pathname.split('/').pop());
+  let [filter, setFilter] = useState('all');
+  const { users } = Store();
   const updateStore = UpdateStore();
 
   useEffect(() => {
-    getNewsletters();
+    getUsers();
   }, []);
 
-  const getNewsletters = async () => {
-    const data = await api("get", "/newsletters");
-    const data2 = await api("get", "/users");
-    console.log("data 2", data2);
+  const getUsers = async () => {
+    const data = await api('get', '/users');
 
     if (data) {
-      //   updateStore({ newsletters: data2.newsletters });
-      updateStore({ newsletters: data2 });
+      updateStore({ users: data });
     }
   };
 
   const handleFiler = (e) => {
     setFilter(e.target.name);
   };
-  const myHeader = ["Email", "Type", "SUBSCRIBED At"];
-  console.log("page is ", page);
+  const myHeader = ['Email', 'Type', 'SUBSCRIBED At'];
+  console.log('page is ', page);
 
   return (
     <>
@@ -73,18 +70,16 @@ const AllUsers = () => {
             <Card className="shadow">
               <CardHeader className="border-0">
                 <div className="d-flex justify-content-between ">
-                  <h3 className="mb-0" style={{ textTransform: "capitalize" }}>
+                  <h3 className="mb-0" style={{ textTransform: 'capitalize' }}>
                     All Users
                   </h3>
 
                   <UncontrolledDropdown>
-                    <div style={{ display: "flex" }}>
+                    <div style={{ display: 'flex' }}>
                       <ExportExecl
-                        Users={newsletters
+                        Users={users
                           .sort(function (a, b) {
-                            return (
-                              new Date(b.createdAt) - new Date(a.createdAt)
-                            );
+                            return new Date(b.createdAt) - new Date(a.createdAt);
                           })
                           ?.slice(0, 20)}
                         myHeader={myHeader}
@@ -97,10 +92,10 @@ const AllUsers = () => {
                         caret
                         size="md"
                         style={{
-                          textTransform: "capitalize"
+                          textTransform: 'capitalize',
                         }}
                       >
-                        {filter === "all" ? "Filter by type" : filter + "s"}
+                        {filter === 'all' ? 'Filter by type' : filter + 's'}
                       </DropdownToggle>
                     </div>
                     <DropdownMenu>
@@ -111,44 +106,47 @@ const AllUsers = () => {
                         Beta Testers
                       </DropdownItem>
                       <DropdownItem
-                        name="newsletter"
-                        style={{ textTransform: "capitalize" }}
+                        name="users"
+                        style={{ textTransform: 'capitalize' }}
                         onClick={handleFiler}
                       >
-                        {page === "all" ? "Newsletters" : page + "s"}
+                        {page === 'all' ? 'users' : page + 's'}
                       </DropdownItem>
                     </DropdownMenu>
                   </UncontrolledDropdown>
                 </div>
               </CardHeader>
-              {console.log("data", newsletters)}
               <Table className="align-items-center table-flush" responsive>
                 <thead className="thead-light">
                   <tr>
+                    <th scope="col">ID</th>
                     <th scope="col">Email</th>
-                    <th scope="col">Type</th>
+                    <th scope="col">Status</th>
                     <th scope="col">Created At</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {newsletters
-                    .sort(function (a, b) {
-                      return new Date(b.createdAt) - new Date(a.createdAt);
-                    })
-                    ?.slice(0, 20)
-                    ?.map((newsletter) => {
-                      return (
-                        <tr>
-                          <td>{newsletter.email}</td>
-                          <td style={{ textTransform: "capitalize" }}>
-                            {newsletter.role}
-                          </td>
-                          <td>
-                            {new Date(newsletter.createdAt).toDateString()}
-                          </td>
-                        </tr>
-                      );
-                    })}
+                  {users
+                    ? users
+                        .filter(function (r) {
+                          return r.role === 'User';
+                        })
+                        .sort(function (a, b) {
+                          return new Date(b.createdAt) - new Date(a.createdAt);
+                        })
+                        // ?.slice(0, 20)
+                        ?.map((user) => {
+                          return (
+                            <tr>
+                              <td>{user.username}</td>
+                              <td>{user.email}</td>
+                              {/* <td>{user.status}</td> */}
+                              <td>Active</td>
+                              <td>{new Date(user.createdAt).toDateString()}</td>
+                            </tr>
+                          );
+                        })
+                    : 'No User found'}
                 </tbody>
               </Table>
 
