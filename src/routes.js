@@ -28,21 +28,16 @@ import Tables from 'views/Tables.js';
 import Icons from 'views/Icons.js';
 import Creators from './views/Creators';
 import Admins from './views/Admins';
-import BasicInfo from './components/BasicInfo';
+import { Store } from 'StoreContext';
 
 var routes = [
   {
     path: '/index',
-    component: Construction,
+    name: 'Articles',
+    icon: 'ni ni-single-copy-04 text-yellow',
+    component: Articles,
     layout: '/admin',
   },
-  // {
-  //   path: "/index",
-  //   name: "Articles",
-  //   icon: "ni ni-single-copy-04 text-red",
-  //   component: Articles,
-  //   layout: "/admin"
-  // },
 
   {
     path: '/admins',
@@ -88,13 +83,13 @@ var routes = [
     component: Newsletters,
     layout: '/admin',
   },
-  {
-    path: '/user-profile',
-    name: 'User Profile',
-    icon: 'ni ni-circle-08 text-yellow',
-    component: BasicInfo,
-    layout: '/admin',
-  },
+  // {
+  //   path: '/user-profile',
+  //   name: 'User Profile',
+  //   icon: 'ni ni-circle-08 text-yellow',
+  //   component: BasicInfo,
+  //   layout: '/admin',
+  // },
   {
     path: '/register',
     name: 'Register',

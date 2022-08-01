@@ -34,6 +34,7 @@ import {
 } from 'reactstrap';
 // core components
 import Header from 'components/Headers/Header.js';
+import SearchBar from '../components/Searchbar';
 
 const Users = () => {
   let [page] = useState(window.location.pathname.split('/').pop());
@@ -73,6 +74,7 @@ const Users = () => {
                     Users
                   </h3>
 
+                  <SearchBar />
                   <UncontrolledDropdown>
                     <div style={{ display: 'flex' }}>
                       <ExportExecl
@@ -94,22 +96,19 @@ const Users = () => {
                           textTransform: 'capitalize',
                         }}
                       >
-                        {filter === 'all' ? 'Filter by type' : filter + 's'}
+                        {filter === 'all' ? 'Sort By' : filter + 's'}
                       </DropdownToggle>
                     </div>
                     <DropdownMenu>
-                      <DropdownItem name="all" onClick={handleFiler}>
-                        All
-                      </DropdownItem>
                       <DropdownItem name="tester" onClick={handleFiler}>
-                        Beta Testers
+                        A-Z
                       </DropdownItem>
                       <DropdownItem
-                        name="users"
+                        name="admins"
                         style={{ textTransform: 'capitalize' }}
                         onClick={handleFiler}
                       >
-                        {page === 'all' ? 'users' : page + 's'}
+                        Date created
                       </DropdownItem>
                     </DropdownMenu>
                   </UncontrolledDropdown>
@@ -122,7 +121,6 @@ const Users = () => {
                     <th scope="col">Email</th>
                     <th scope="col">Status</th>
                     <th scope="col">Created At</th>
-                    <th></th>
                     <th></th>
                   </tr>
                 </thead>
@@ -145,28 +143,27 @@ const Users = () => {
                               <td>Active</td>
                               <td>{new Date(user.createdAt).toDateString()}</td>
 
-                              <td>
-                                <button
-                                  type="button"
-                                  className="btn active btn-default"
-                                  data-toggle="button"
-                                  aria-pressed="true"
-                                >
-                                  <i class="fa fa-ban fa-warning" aria-hidden="true">
-                                    {'   '}
-                                  </i>
-                                  &nbsp; Suspend
-                                </button>
-                              </td>
-                              <td>
-                                <button
-                                  type="button"
-                                  className="btn active btn-danger"
-                                  data-toggle="button"
-                                  aria-pressed="true"
-                                >
-                                  <i class="fa fa-trash" aria-hidden="true"></i> &nbsp; Ban
-                                </button>
+                              <td className="text-right">
+                                <UncontrolledDropdown>
+                                  <DropdownToggle
+                                    className="btn-icon-only text-light"
+                                    href="#pablo"
+                                    role="button"
+                                    size="sm"
+                                    color=""
+                                  >
+                                    <i className="fas fa-ellipsis-v" />
+                                  </DropdownToggle>
+                                  <DropdownMenu className="dropdown-menu-arrow" right>
+                                    <DropdownItem>
+                                      <i class="fa fa-ban fa-warning" /> Suspend
+                                    </DropdownItem>
+
+                                    <DropdownItem href="#pablo" className="text-danger">
+                                      <i class="fa fa-trash" /> Ban
+                                    </DropdownItem>
+                                  </DropdownMenu>
+                                </UncontrolledDropdown>
                               </td>
                             </tr>
                           );

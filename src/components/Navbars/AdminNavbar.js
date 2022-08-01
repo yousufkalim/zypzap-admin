@@ -17,7 +17,10 @@
 */
 import { Link } from 'react-router-dom';
 import { Store } from 'StoreContext';
+import { useState } from 'react';
 // reactstrap components
+
+import AdminProfile from '../../views/AdminProfile/AdminProfile';
 import {
   DropdownMenu,
   DropdownItem,
@@ -37,10 +40,15 @@ import {
 
 const AdminNavbar = (props) => {
   const { user } = Store();
+  const [openProfileModal, setOpenProfileModal] = useState(false);
 
   const handleLogout = () => {
     localStorage.setItem('token', '');
     window.location = '/auth/login';
+  };
+  const handleProfileModal = () => {
+    setOpenProfileModal((open) => !open);
+    return openProfileModal;
   };
 
   return (
@@ -66,7 +74,7 @@ const AdminNavbar = (props) => {
                 <DropdownItem className="noti-title" header tag="div">
                   <h6 className="text-overflow m-0">Welcome!</h6>
                 </DropdownItem>
-                <DropdownItem to="/admin/user-profile" tag={Link}>
+                <DropdownItem to="/admin/user-profile" onClick={handleProfileModal} tag={Link}>
                   <i className="ni ni-single-02" />
                   <span>My profile</span>
                 </DropdownItem>
@@ -92,6 +100,14 @@ const AdminNavbar = (props) => {
           </Nav>
         </Container>
       </Navbar>
+      {openProfileModal && (
+        <AdminProfile
+          openModal={openProfileModal}
+          handleModal={handleProfileModal}
+          user={user}
+          isEditing={true}
+        />
+      )}
     </>
   );
 };

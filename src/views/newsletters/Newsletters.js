@@ -34,6 +34,7 @@ import {
 } from 'reactstrap';
 // core components
 import Header from 'components/Headers/Header.js';
+import SearchBar from '../../components/Searchbar';
 
 const Newsletters = () => {
   let [page] = useState(window.location.pathname.split('/').pop());
@@ -72,6 +73,7 @@ const Newsletters = () => {
                     {page === 'all' ? 'Newsletters' : page + 's'}
                   </h3>
 
+                  <SearchBar />
                   <UncontrolledDropdown>
                     <div style={{ display: 'flex' }}>
                       <ExportExecl
@@ -97,22 +99,19 @@ const Newsletters = () => {
                           textTransform: 'capitalize',
                         }}
                       >
-                        {filter === 'all' ? 'Filter by type' : filter + 's'}
+                        {filter === 'all' ? 'Sort By' : filter + 's'}
                       </DropdownToggle>
                     </div>
                     <DropdownMenu>
-                      <DropdownItem name="all" onClick={handleFiler}>
-                        All
-                      </DropdownItem>
                       <DropdownItem name="tester" onClick={handleFiler}>
-                        Beta Testers
+                        A-Z
                       </DropdownItem>
                       <DropdownItem
-                        name="newsletter"
+                        name="admins"
                         style={{ textTransform: 'capitalize' }}
                         onClick={handleFiler}
                       >
-                        {page === 'all' ? 'Newsletters' : page + 's'}
+                        Date created
                       </DropdownItem>
                     </DropdownMenu>
                   </UncontrolledDropdown>
