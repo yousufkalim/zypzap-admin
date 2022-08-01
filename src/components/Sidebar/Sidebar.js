@@ -74,7 +74,6 @@ const Sidebar = (props) => {
       routes = routes.filter((a) => a.path !== '/admins');
     }
     return routes.map((prop, key) => {
-      console.log('ROUTES', routes);
       if (prop.layout === '/admin') {
         return (
           <NavItem key={key}>

@@ -40,6 +40,8 @@ const Users = () => {
   let [page] = useState(window.location.pathname.split('/').pop());
   let [filter, setFilter] = useState('all');
   const { users } = Store();
+  let [sortedData, setSortedData] = useState('');
+
   const updateStore = UpdateStore();
 
   useEffect(() => {
@@ -54,9 +56,6 @@ const Users = () => {
     }
   };
 
-  const handleFiler = (e) => {
-    setFilter(e.target.name);
-  };
   const myHeader = ['Email', 'Type', 'SUBSCRIBED At'];
 
   return (
@@ -100,13 +99,13 @@ const Users = () => {
                       </DropdownToggle>
                     </div>
                     <DropdownMenu>
-                      <DropdownItem name="tester" onClick={handleFiler}>
+                      <DropdownItem name="tester" onClick={() => setSortedData('byAlphabet')}>
                         A-Z
                       </DropdownItem>
                       <DropdownItem
                         name="admins"
                         style={{ textTransform: 'capitalize' }}
-                        onClick={handleFiler}
+                        onClick={() => setSortedData('byDate')}
                       >
                         Date created
                       </DropdownItem>
@@ -130,11 +129,16 @@ const Users = () => {
                         .filter(function (r) {
                           return r.role === 'User';
                         })
-                        .sort(function (a, b) {
-                          return new Date(b.createdAt) - new Date(a.createdAt);
+                        .sort((a, b) => {
+                          if (sortedData === 'byAlphabet') {
+                            return a.username.localeCompare(b.username);
+                          } else if (sortedData === 'byDate') {
+                            return new Date(b.createdAt) - new Date(a.createdAt);
+                          }
                         })
+
                         // ?.slice(0, 20)
-                        ?.map((user) => {
+                        .map((user) => {
                           return (
                             <tr>
                               <td>{user.username}</td>

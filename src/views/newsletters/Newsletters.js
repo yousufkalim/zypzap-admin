@@ -41,6 +41,7 @@ const Newsletters = () => {
   let [filter, setFilter] = useState('all');
   const { newsletters } = Store();
   const updateStore = UpdateStore();
+  let [sortedData, setSortedData] = useState('');
 
   useEffect(() => {
     getNewsletters();
@@ -54,9 +55,6 @@ const Newsletters = () => {
     }
   };
 
-  const handleFiler = (e) => {
-    setFilter(e.target.name);
-  };
   const myHeader = ['Email', 'Type', 'SUBSCRIBED At'];
   return (
     <>
@@ -103,13 +101,13 @@ const Newsletters = () => {
                       </DropdownToggle>
                     </div>
                     <DropdownMenu>
-                      <DropdownItem name="tester" onClick={handleFiler}>
+                      <DropdownItem name="tester" onClick={() => setSortedData('byAlphabet')}>
                         A-Z
                       </DropdownItem>
                       <DropdownItem
                         name="admins"
                         style={{ textTransform: 'capitalize' }}
-                        onClick={handleFiler}
+                        onClick={() => setSortedData('byDate')}
                       >
                         Date created
                       </DropdownItem>
@@ -134,6 +132,14 @@ const Newsletters = () => {
                         return a.type === page && a.tester === true;
                       } else if (filter === 'newsletter') {
                         return a.type === page && a.tester === false;
+                      }
+                    })
+
+                    .sort((a, b) => {
+                      if (sortedData === 'byAlphabet') {
+                        return a.email.localeCompare(b.email);
+                      } else if (sortedData === 'byDate') {
+                        return new Date(b.createdAt) - new Date(a.createdAt);
                       }
                     })
                     .map((newsletter) => {

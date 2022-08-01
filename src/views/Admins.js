@@ -19,6 +19,7 @@
 import { useState, useEffect } from 'react';
 import api from 'api';
 import { Store, UpdateStore } from 'StoreContext';
+
 import ExportExecl from 'views/exportfiles/ExportExecl.js';
 import {
   Card,
@@ -35,6 +36,7 @@ import {
 // core components
 import Header from 'components/Headers/Header.js';
 import SearchBar from '../components/Searchbar';
+import { toast } from 'react-toastify';
 
 const Admins = () => {
   let [page] = useState(window.location.pathname.split('/').pop());
@@ -42,6 +44,7 @@ const Admins = () => {
   const { admins } = Store();
   const { user } = Store();
   const updateStore = UpdateStore();
+  let [sortedData, setSortedData] = useState('');
 
   useEffect(() => {
     getAdmins();
@@ -56,9 +59,6 @@ const Admins = () => {
     }
   };
 
-  const handleFiler = (e) => {
-    setFilter(e.target.name);
-  };
   const myHeader = ['Email', 'Type', 'SUBSCRIBED At'];
 
   return (
@@ -103,13 +103,13 @@ const Admins = () => {
                       </DropdownToggle>
                     </div>
                     <DropdownMenu>
-                      <DropdownItem name="tester" onClick={handleFiler}>
+                      <DropdownItem name="tester" onClick={() => setSortedData('byAlphabet')}>
                         A-Z
                       </DropdownItem>
                       <DropdownItem
                         name="admins"
                         style={{ textTransform: 'capitalize' }}
-                        onClick={handleFiler}
+                        onClick={() => setSortedData('byDate')}
                       >
                         Date created
                       </DropdownItem>
@@ -131,10 +131,16 @@ const Admins = () => {
                 <tbody>
                   {admins
                     ? admins
-                        .sort(function (a, b) {
-                          return new Date(b.createdAt) - new Date(a.createdAt);
+                        .filter(function (a) {
+                          return a.role == 'admin';
                         })
-                        // ?.slice(0, 20)
+                        .sort((a, b) => {
+                          if (sortedData === 'byAlphabet') {
+                            return a.name.localeCompare(b.name);
+                          } else if (sortedData === 'byDate') {
+                            return new Date(b.createdAt) - new Date(a.createdAt);
+                          }
+                        })
                         ?.map((admin) => {
                           return (
                             <tr>
@@ -183,7 +189,11 @@ const Admins = () => {
                                       <i class="fa fa-ban fa-warning" /> Suspend
                                     </DropdownItem>
 
-                                    <DropdownItem href="#pablo" className="text-danger">
+                                    <DropdownItem
+                                      href="#pablo"
+                                      className="text-danger"
+                                      onClick={handleDelete}
+                                    >
                                       <i class="fa fa-trash" /> Delete
                                     </DropdownItem>
                                   </DropdownMenu>
