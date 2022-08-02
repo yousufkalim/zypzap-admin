@@ -35,6 +35,7 @@ import {
 // core components
 import Header from 'components/Headers/Header.js';
 import SearchBar from '../components/Searchbar';
+import { toast } from 'react-toastify';
 
 const Users = () => {
   let [page] = useState(window.location.pathname.split('/').pop());
@@ -55,7 +56,16 @@ const Users = () => {
       updateStore({ users: data });
     }
   };
+  const handleStatus = (id, status) => {
+    let method = 'put';
+    let uri = '/users';
+    uri = uri + `/${id}`;
 
+    api(method, uri, { status }).then((res) => {
+      toast.success('User updated successfully');
+      getUsers();
+    });
+  };
   const myHeader = ['Email', 'Type', 'SUBSCRIBED At'];
 
   return (
@@ -95,17 +105,17 @@ const Users = () => {
                           textTransform: 'capitalize',
                         }}
                       >
-                        {filter === 'all' ? 'Sort By' : filter + 's'}
+                        {sortedData ? sortedData : 'Sort By'}
                       </DropdownToggle>
                     </div>
                     <DropdownMenu>
-                      <DropdownItem name="tester" onClick={() => setSortedData('byAlphabet')}>
+                      <DropdownItem name="tester" onClick={() => setSortedData('A-Z')}>
                         A-Z
                       </DropdownItem>
                       <DropdownItem
                         name="admins"
                         style={{ textTransform: 'capitalize' }}
-                        onClick={() => setSortedData('byDate')}
+                        onClick={() => setSortedData('Date Created')}
                       >
                         Date created
                       </DropdownItem>
@@ -130,9 +140,9 @@ const Users = () => {
                           return r.role === 'User';
                         })
                         .sort((a, b) => {
-                          if (sortedData === 'byAlphabet') {
+                          if (sortedData === 'A-Z') {
                             return a.username.localeCompare(b.username);
-                          } else if (sortedData === 'byDate') {
+                          } else if (sortedData === 'Date Created') {
                             return new Date(b.createdAt) - new Date(a.createdAt);
                           }
                         })
@@ -143,8 +153,10 @@ const Users = () => {
                             <tr>
                               <td>{user.username}</td>
                               <td>{user.email}</td>
-                              {/* <td>{user.status}</td> */}
-                              <td>Active</td>
+                              <td className={user.status === 'Banned' ? 'text-red' : ''}>
+                                {user.status}
+                              </td>
+
                               <td>{new Date(user.createdAt).toDateString()}</td>
 
                               <td className="text-right">
@@ -159,13 +171,31 @@ const Users = () => {
                                     <i className="fas fa-ellipsis-v" />
                                   </DropdownToggle>
                                   <DropdownMenu className="dropdown-menu-arrow" right>
-                                    <DropdownItem>
-                                      <i class="fa fa-ban fa-warning" /> Suspend
-                                    </DropdownItem>
-
-                                    <DropdownItem href="#pablo" className="text-danger">
-                                      <i class="fa fa-trash" /> Ban
-                                    </DropdownItem>
+                                    {user.status === 'Active' ? (
+                                      <DropdownItem
+                                        onClick={() => handleStatus(user._id, 'Suspended')}
+                                      >
+                                        <i class="fa fa-ban fa-warning" /> Suspend
+                                      </DropdownItem>
+                                    ) : (
+                                      <DropdownItem
+                                        className="text-success"
+                                        onClick={() => handleStatus(user._id, 'Active')}
+                                      >
+                                        <i class="fas fa-user-check" /> Activate
+                                      </DropdownItem>
+                                    )}
+                                    {user.status !== 'Banned' ? (
+                                      <DropdownItem
+                                        href="#pablo"
+                                        className="text-danger"
+                                        onClick={() => handleStatus(user._id, 'Banned')}
+                                      >
+                                        <i class="fa fa-trash" /> Ban
+                                      </DropdownItem>
+                                    ) : (
+                                      ''
+                                    )}
                                   </DropdownMenu>
                                 </UncontrolledDropdown>
                               </td>

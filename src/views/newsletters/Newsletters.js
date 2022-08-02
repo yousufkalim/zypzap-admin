@@ -97,17 +97,17 @@ const Newsletters = () => {
                           textTransform: 'capitalize',
                         }}
                       >
-                        {filter === 'all' ? 'Sort By' : filter + 's'}
+                        {sortedData ? sortedData : 'Sort By'}
                       </DropdownToggle>
                     </div>
                     <DropdownMenu>
-                      <DropdownItem name="tester" onClick={() => setSortedData('byAlphabet')}>
+                      <DropdownItem name="tester" onClick={() => setSortedData('A-Z')}>
                         A-Z
                       </DropdownItem>
                       <DropdownItem
                         name="admins"
                         style={{ textTransform: 'capitalize' }}
-                        onClick={() => setSortedData('byDate')}
+                        onClick={() => setSortedData('Date Created')}
                       >
                         Date created
                       </DropdownItem>
@@ -136,9 +136,9 @@ const Newsletters = () => {
                     })
 
                     .sort((a, b) => {
-                      if (sortedData === 'byAlphabet') {
+                      if (sortedData === 'A-Z') {
                         return a.email.localeCompare(b.email);
-                      } else if (sortedData === 'byDate') {
+                      } else if (sortedData === 'Date Created') {
                         return new Date(b.createdAt) - new Date(a.createdAt);
                       }
                     })

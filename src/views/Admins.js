@@ -17,7 +17,7 @@
 */
 // reactstrap components
 import { useState, useEffect } from 'react';
-import api from 'api';
+// import api from 'api';
 import { Store, UpdateStore } from 'StoreContext';
 
 import ExportExecl from 'views/exportfiles/ExportExecl.js';
@@ -37,10 +37,12 @@ import {
 import Header from 'components/Headers/Header.js';
 import SearchBar from '../components/Searchbar';
 import { toast } from 'react-toastify';
+import api from '../api/index';
 
 const Admins = () => {
   let [page] = useState(window.location.pathname.split('/').pop());
   let [filter, setFilter] = useState('all');
+
   const { admins } = Store();
   const { user } = Store();
   const updateStore = UpdateStore();
@@ -57,6 +59,26 @@ const Admins = () => {
         admins: data,
       });
     }
+  };
+
+  const handleDelete = (id) => {
+    let Deletedadmin = api('delete', `/admins/${id}`).then(() => {
+      toast.success('Admin deleted successfully');
+    });
+
+    updateStore({ admins: admins.filter((a) => a._id !== id) });
+  };
+
+  const handleStatus = (id, status) => {
+    // setUpdateAdmin({ status: 'Active' });
+    let method = 'put';
+    let uri = '/admins';
+    uri = uri + `/${id}`;
+
+    api(method, uri, { status }).then((res) => {
+      toast.success('Admin updated successfully');
+      getAdmins();
+    });
   };
 
   const myHeader = ['Email', 'Type', 'SUBSCRIBED At'];
@@ -99,17 +121,17 @@ const Admins = () => {
                           textTransform: 'capitalize',
                         }}
                       >
-                        {filter === 'all' ? 'Sort By' : filter + 's'}
+                        {sortedData ? sortedData : 'Sort By'}
                       </DropdownToggle>
                     </div>
                     <DropdownMenu>
-                      <DropdownItem name="tester" onClick={() => setSortedData('byAlphabet')}>
+                      <DropdownItem name="tester" onClick={() => setSortedData('A-Z')}>
                         A-Z
                       </DropdownItem>
                       <DropdownItem
                         name="admins"
                         style={{ textTransform: 'capitalize' }}
-                        onClick={() => setSortedData('byDate')}
+                        onClick={() => setSortedData('Date Created')}
                       >
                         Date created
                       </DropdownItem>
@@ -134,10 +156,10 @@ const Admins = () => {
                         .filter(function (a) {
                           return a.role == 'admin';
                         })
-                        .sort((a, b) => {
-                          if (sortedData === 'byAlphabet') {
+                        ?.sort((a, b) => {
+                          if (sortedData === 'A-Z') {
                             return a.name.localeCompare(b.name);
-                          } else if (sortedData === 'byDate') {
+                          } else if (sortedData === 'Date Created') {
                             return new Date(b.createdAt) - new Date(a.createdAt);
                           }
                         })
@@ -146,33 +168,10 @@ const Admins = () => {
                             <tr>
                               <td>{admin.name}</td>
                               <td>{admin.email}</td>
-                              {/* <td>{admin.status}</td> */}
-                              <td>Active</td>
+                              <td>{admin.status || 'Pending'}</td>
+                              {/* <td>Active</td> */}
                               <td>{new Date(admin.createdAt).toDateString()}</td>
 
-                              {/* <td>
-                                <button
-                                  type="button"
-                                  className="btn active btn-default"
-                                  data-toggle="button"
-                                  aria-pressed="true"
-                                >
-                                  <i class="fa fa-ban fa-warning" aria-hidden="true">
-                                    {'   '}
-                                  </i>
-                                  &nbsp; Suspend
-                                </button>
-                              </td>
-                              <td>
-                                <button
-                                  type="button"
-                                  className="btn active btn-danger"
-                                  data-toggle="button"
-                                  aria-pressed="true"
-                                >
-                                  <i class="fa fa-trash" aria-hidden="true"></i> &nbsp; Delete
-                                </button>
-                              </td> */}
                               <td className="text-right">
                                 <UncontrolledDropdown>
                                   <DropdownToggle
@@ -185,14 +184,25 @@ const Admins = () => {
                                     <i className="fas fa-ellipsis-v" />
                                   </DropdownToggle>
                                   <DropdownMenu className="dropdown-menu-arrow" right>
-                                    <DropdownItem>
-                                      <i class="fa fa-ban fa-warning" /> Suspend
-                                    </DropdownItem>
+                                    {admin.status === 'Active' ? (
+                                      <DropdownItem
+                                        onClick={() => handleStatus(admin._id, 'Suspended')}
+                                      >
+                                        <i class="fa fa-ban fa-warning" /> Suspend
+                                      </DropdownItem>
+                                    ) : (
+                                      <DropdownItem
+                                        className="text-success"
+                                        onClick={() => handleStatus(admin._id, 'Active')}
+                                      >
+                                        <i class="fas fa-user-check" /> Activate
+                                      </DropdownItem>
+                                    )}
 
                                     <DropdownItem
                                       href="#pablo"
                                       className="text-danger"
-                                      onClick={handleDelete}
+                                      onClick={() => handleDelete(admin._id)}
                                     >
                                       <i class="fa fa-trash" /> Delete
                                     </DropdownItem>
