@@ -1,10 +1,10 @@
-import React from "react";
-import * as FileSaver from "file-saver";
-import * as XLSX from "xlsx";
-import { useState } from "react";
-import api from "api";
+import React from 'react';
+import * as FileSaver from 'file-saver';
+import * as XLSX from 'xlsx';
+import { useState } from 'react';
+import api from 'api';
 
-import { Button } from "reactstrap";
+import { Button } from 'reactstrap';
 
 // Component
 const ExportExecl = ({ Users, myHeader }) => {
@@ -14,9 +14,9 @@ const ExportExecl = ({ Users, myHeader }) => {
 
   // File Type
   const fileType =
-    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8";
+    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
   // Extension
-  const fileExtension = ".xlsx";
+  const fileExtension = '.xlsx';
   const exportToCSV = (csvData, fileName) => {
     // Setting cols width
     var wscols = [{ wch: 30 }, { wch: 30 }, { wch: 30 }];
@@ -25,11 +25,11 @@ const ExportExecl = ({ Users, myHeader }) => {
 
     const ws = XLSX.utils.json_to_sheet(csvData, { header: myHeader });
 
-    ws["!cols"] = wscols;
+    ws['!cols'] = wscols;
 
-    const wb = { Sheets: { users: ws }, SheetNames: ["users"] };
+    const wb = { Sheets: { users: ws }, SheetNames: ['users'] };
 
-    const excelBuffer = XLSX.write(wb, { bookType: "xlsx", type: "array" });
+    const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
 
     const e_data = new Blob([excelBuffer], { type: fileType });
 
@@ -42,25 +42,20 @@ const ExportExecl = ({ Users, myHeader }) => {
 
     if (Users.length > 0) {
       updatedUsers = Users.map((user) => {
-        console.log("users for export ", user);
         return {
           Email: user.email,
-          Type: user?.type ? user.type : user?.role ? user?.role : "",
-          "SUBSCRIBED At": new Date(user.createdAt).toLocaleString()
+          Type: user?.type ? user.type : user?.role ? user?.role : '',
+          'SUBSCRIBED At': new Date(user.createdAt).toLocaleString(),
         };
       });
     }
     setLoading(false);
-    console.log("users for export ", updatedUsers);
-    exportToCSV(updatedUsers, " données des utilisateurs");
+    exportToCSV(updatedUsers, ' données des utilisateurs');
   };
 
   // Render
   return (
-    <div
-      className="d-flex justify-content-between "
-      style={{ marginRight: "20px" }}
-    >
+    <div className="d-flex justify-content-between " style={{ marginRight: '20px' }}>
       <Button
         color="primary"
         href="#pablo"
@@ -70,7 +65,7 @@ const ExportExecl = ({ Users, myHeader }) => {
         size="md"
         disabled={loading}
       >
-        {loading ? "Chargement en cours" : "Export excel"}
+        {loading ? 'Chargement en cours' : 'Export excel'}
       </Button>
     </div>
   );

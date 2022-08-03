@@ -15,9 +15,12 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import { Link } from "react-router-dom";
-import { Store } from "StoreContext";
+import { Link } from 'react-router-dom';
+import { Store } from 'StoreContext';
+import { useState } from 'react';
 // reactstrap components
+
+import AdminProfile from '../../views/AdminProfile/AdminProfile';
 import {
   DropdownMenu,
   DropdownItem,
@@ -33,14 +36,19 @@ import {
   Nav,
   Container,
   Media,
-} from "reactstrap";
+} from 'reactstrap';
 
 const AdminNavbar = (props) => {
   const { user } = Store();
+  const [openProfileModal, setOpenProfileModal] = useState(false);
 
   const handleLogout = () => {
-    localStorage.setItem("token", "");
-    window.location = "/auth/login";
+    localStorage.setItem('token', '');
+    window.location = '/auth/login';
+  };
+  const handleProfileModal = () => {
+    setOpenProfileModal((open) => !open);
+    return openProfileModal;
   };
 
   return (
@@ -58,21 +66,19 @@ const AdminNavbar = (props) => {
               <DropdownToggle className="pr-0" nav>
                 <Media className="align-items-center">
                   <Media className="ml-2 d-none d-lg-block">
-                    <span className="mb-0 text-sm font-weight-bold">
-                      {user.name}
-                    </span>
+                    <span className="mb-0 text-sm font-weight-bold">{user.name}</span>
                   </Media>
                 </Media>
               </DropdownToggle>
               <DropdownMenu className="dropdown-menu-arrow" right>
-                {/* <DropdownItem className="noti-title" header tag="div">
+                <DropdownItem className="noti-title" header tag="div">
                   <h6 className="text-overflow m-0">Welcome!</h6>
                 </DropdownItem>
-                <DropdownItem to="/admin/user-profile" tag={Link}>
+                <DropdownItem to="/admin/user-profile" onClick={handleProfileModal} tag={Link}>
                   <i className="ni ni-single-02" />
                   <span>My profile</span>
                 </DropdownItem>
-                <DropdownItem to="/admin/user-profile" tag={Link}>
+                {/* <DropdownItem to="/admin/user-profile" tag={Link}>
                   <i className="ni ni-settings-gear-65" />
                   <span>Settings</span>
                 </DropdownItem>
@@ -94,6 +100,14 @@ const AdminNavbar = (props) => {
           </Nav>
         </Container>
       </Navbar>
+      {openProfileModal && (
+        <AdminProfile
+          openModal={openProfileModal}
+          handleModal={handleProfileModal}
+          user={user}
+          isEditing={true}
+        />
+      )}
     </>
   );
 };

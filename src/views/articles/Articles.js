@@ -16,9 +16,9 @@
 
 */
 // reactstrap components
-import { useState, useEffect } from "react";
-import api from "api";
-import { Store, UpdateStore } from "StoreContext";
+import { useState, useEffect } from 'react';
+import api from 'api';
+import { Store, UpdateStore } from 'StoreContext';
 import {
   Badge,
   Card,
@@ -34,12 +34,13 @@ import {
   Container,
   Row,
   UncontrolledTooltip,
-} from "reactstrap";
+} from 'reactstrap';
 // core components
-import AddArticle from "./AddArticle";
-import EditArticle from "./EditArticle";
-import Header from "components/Headers/Header.js";
-import { toast } from "react-toastify";
+import AddArticle from './AddArticle';
+import EditArticle from './EditArticle';
+import Header from 'components/Headers/Header.js';
+import { toast } from 'react-toastify';
+import SearchBar from '../../components/Searchbar';
 
 const Articles = () => {
   const [openModal, setOpenModal] = useState(false);
@@ -53,7 +54,7 @@ const Articles = () => {
   }, []);
 
   const getArticles = async () => {
-    const data = await api("get", "/blogs");
+    const data = await api('get', '/blogs');
 
     if (data) {
       updateStore({ articles: data });
@@ -72,13 +73,13 @@ const Articles = () => {
   };
 
   const handleDelete = (id) => {
-    api("delete", `/blogs/${id}`)
+    api('delete', `/blogs/${id}`)
       .then(() => {
-        toast.success("Article deleted successfully");
+        toast.success('Article deleted successfully');
         getArticles();
       })
       .catch(() => {
-        toast.error("An error occurred while deleting");
+        toast.error('An error occurred while deleting');
       });
   };
 
@@ -94,12 +95,8 @@ const Articles = () => {
               <CardHeader className="border-0">
                 <div className="d-flex justify-content-between ">
                   <h3 className="mb-0">Articles</h3>
-                  <Button
-                    color="primary"
-                    href="#pablo"
-                    onClick={handleModal}
-                    size="md"
-                  >
+                  <SearchBar />
+                  <Button color="primary" href="#pablo" onClick={handleModal} size="md">
                     <i className="ni ni-fat-add"></i>
                     Add Article
                   </Button>
@@ -129,19 +126,13 @@ const Articles = () => {
                             >
                               <img
                                 alt="Article"
-                                src={
-                                  process.env.REACT_APP_SERVER_MEDIA_URL +
-                                  article.blog_images
-                                }
+                                src={process.env.REACT_APP_SERVER_MEDIA_URL + article.blog_images}
                               />
                             </a>
                             <Media>
-                              <span
-                                className="mb-0 text-sm"
-                                title={article.blog_title}
-                              >
+                              <span className="mb-0 text-sm" title={article.blog_title}>
                                 {article.blog_title?.length > 30
-                                  ? article.blog_title?.substring(0, 30) + "..."
+                                  ? article.blog_title?.substring(0, 30) + '...'
                                   : article.blog_title}
                               </span>
                             </Media>
@@ -149,7 +140,7 @@ const Articles = () => {
                         </th>
                         <td title={article.blog_desc}>
                           {article.blog_desc?.length > 30
-                            ? article.blog_desc?.substring(0, 30) + "..."
+                            ? article.blog_desc?.substring(0, 30) + '...'
                             : article.blog_desc}
                         </td>
                         <td>
@@ -177,19 +168,13 @@ const Articles = () => {
                               <DropdownItem
                                 onClick={() =>
                                   window
-                                    .open(
-                                      `https://passtotrip.com/blog/${article._id}`,
-                                      "_blank"
-                                    )
+                                    .open(`https://passtotrip.com/blog/${article._id}`, '_blank')
                                     .focus()
                                 }
                               >
                                 View
                               </DropdownItem>
-                              <DropdownItem
-                                href="#pablo"
-                                onClick={() => handleEditModal(article)}
-                              >
+                              <DropdownItem href="#pablo" onClick={() => handleEditModal(article)}>
                                 Edit
                               </DropdownItem>
                               <DropdownItem
@@ -266,11 +251,7 @@ const Articles = () => {
           </div>
         </Row>
         {openModal && (
-          <AddArticle
-            openModal={openModal}
-            handleModal={handleModal}
-            getArticles={getArticles}
-          />
+          <AddArticle openModal={openModal} handleModal={handleModal} getArticles={getArticles} />
         )}
         {editModal && (
           <EditArticle

@@ -15,7 +15,7 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import { Link } from "react-router-dom";
+import { Link } from 'react-router-dom';
 // reactstrap components
 import {
   UncontrolledCollapse,
@@ -27,7 +27,7 @@ import {
   Container,
   Row,
   Col,
-} from "reactstrap";
+} from 'reactstrap';
 
 const AdminNavbar = () => {
   return (
@@ -39,7 +39,7 @@ const AdminNavbar = () => {
               alt="..."
               src={require("../../assets/img/brand/passtotrip.png").default}
             /> */}
-            <strong>PassToTrip</strong>
+            <strong>ZypZap</strong>
           </NavbarBrand>
           <button className="navbar-toggler" id="navbar-collapse-main">
             <span className="navbar-toggler-icon" />
@@ -51,10 +51,7 @@ const AdminNavbar = () => {
                   <Link to="/">
                     <img
                       alt="..."
-                      src={
-                        require("../../assets/img/brand/argon-react.png")
-                          .default
-                      }
+                      src={require('../../assets/img/brand/argon-react.png').default}
                     />
                   </Link>
                 </Col>
@@ -68,11 +65,7 @@ const AdminNavbar = () => {
             </div>
             <Nav className="ml-auto" navbar>
               <NavItem>
-                <NavLink
-                  className="nav-link-icon"
-                  to="/auth/register"
-                  tag={Link}
-                >
+                <NavLink className="nav-link-icon" to="/auth/register" tag={Link}>
                   <i className="ni ni-circle-08" />
                   <span className="nav-link-inner--text">Register</span>
                 </NavLink>

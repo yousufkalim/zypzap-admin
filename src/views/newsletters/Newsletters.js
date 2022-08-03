@@ -16,10 +16,10 @@
 
 */
 // reactstrap components
-import { useState, useEffect } from "react";
-import api from "api";
-import { Store, UpdateStore } from "StoreContext";
-import ExportExecl from "views/exportfiles/ExportExecl.js";
+import { useState, useEffect } from 'react';
+import api from 'api';
+import { Store, UpdateStore } from 'StoreContext';
+import ExportExecl from 'views/exportfiles/ExportExecl.js';
 import {
   Card,
   CardHeader,
@@ -30,34 +30,32 @@ import {
   DropdownMenu,
   DropdownToggle,
   DropdownItem,
-  UncontrolledDropdown
-} from "reactstrap";
+  UncontrolledDropdown,
+} from 'reactstrap';
 // core components
-import Header from "components/Headers/Header.js";
+import Header from 'components/Headers/Header.js';
+import SearchBar from '../../components/Searchbar';
 
 const Newsletters = () => {
-  let [page] = useState(window.location.pathname.split("/").pop());
-  let [filter, setFilter] = useState("all");
+  let [page] = useState(window.location.pathname.split('/').pop());
+  let [filter, setFilter] = useState('all');
   const { newsletters } = Store();
   const updateStore = UpdateStore();
+  let [sortedData, setSortedData] = useState('');
 
   useEffect(() => {
     getNewsletters();
   }, []);
 
   const getNewsletters = async () => {
-    const data = await api("get", "/newsletters");
+    const data = await api('get', '/newsletters');
 
     if (data) {
       updateStore({ newsletters: data.newsletters });
     }
   };
 
-  const handleFiler = (e) => {
-    setFilter(e.target.name);
-  };
-  const myHeader = ["Email", "Type", "SUBSCRIBED At"];
-  console.log("page is ", page);
+  const myHeader = ['Email', 'Type', 'SUBSCRIBED At'];
   return (
     <>
       <Header />
@@ -69,18 +67,19 @@ const Newsletters = () => {
             <Card className="shadow">
               <CardHeader className="border-0">
                 <div className="d-flex justify-content-between ">
-                  <h3 className="mb-0" style={{ textTransform: "capitalize" }}>
-                    {page === "all" ? "Newsletters" : page + "s"}
+                  <h3 className="mb-0" style={{ textTransform: 'capitalize' }}>
+                    {page === 'all' ? 'Newsletters' : page + 's'}
                   </h3>
 
+                  <SearchBar />
                   <UncontrolledDropdown>
-                    <div style={{ display: "flex" }}>
+                    <div style={{ display: 'flex' }}>
                       <ExportExecl
                         Users={newsletters.filter((a) => {
-                          if (page === "all") {
-                            return a.type == "all";
-                          } else if (page === "creator") {
-                            return a.type === "creator";
+                          if (page === 'all') {
+                            return a.type == 'all';
+                          } else if (page === 'creator') {
+                            return a.type === 'creator';
                           } else {
                             return a;
                           }
@@ -95,31 +94,27 @@ const Newsletters = () => {
                         caret
                         size="md"
                         style={{
-                          textTransform: "capitalize"
+                          textTransform: 'capitalize',
                         }}
                       >
-                        {filter === "all" ? "Filter by type" : filter + "s"}
+                        {sortedData ? sortedData : 'Sort By'}
                       </DropdownToggle>
                     </div>
                     <DropdownMenu>
-                      <DropdownItem name="all" onClick={handleFiler}>
-                        All
-                      </DropdownItem>
-                      <DropdownItem name="tester" onClick={handleFiler}>
-                        Beta Testers
+                      <DropdownItem name="tester" onClick={() => setSortedData('A-Z')}>
+                        A-Z
                       </DropdownItem>
                       <DropdownItem
-                        name="newsletter"
-                        style={{ textTransform: "capitalize" }}
-                        onClick={handleFiler}
+                        name="admins"
+                        style={{ textTransform: 'capitalize' }}
+                        onClick={() => setSortedData('Date Created')}
                       >
-                        {page === "all" ? "Newsletters" : page + "s"}
+                        Date created
                       </DropdownItem>
                     </DropdownMenu>
                   </UncontrolledDropdown>
                 </div>
               </CardHeader>
-              {console.log("data", newsletters)}
               <Table className="align-items-center table-flush" responsive>
                 <thead className="thead-light">
                   <tr>
@@ -131,28 +126,30 @@ const Newsletters = () => {
                 <tbody>
                   {newsletters
                     .filter((a) => {
-                      if (filter === "all") {
+                      if (filter === 'all') {
                         return a.type === page;
-                      } else if (filter === "tester") {
+                      } else if (filter === 'tester') {
                         return a.type === page && a.tester === true;
-                      } else if (filter === "newsletter") {
+                      } else if (filter === 'newsletter') {
                         return a.type === page && a.tester === false;
+                      }
+                    })
+
+                    .sort((a, b) => {
+                      if (sortedData === 'A-Z') {
+                        return a.email.localeCompare(b.email);
+                      } else if (sortedData === 'Date Created') {
+                        return new Date(b.createdAt) - new Date(a.createdAt);
                       }
                     })
                     .map((newsletter) => {
                       return (
                         <tr>
                           <td>{newsletter.email}</td>
-                          <td style={{ textTransform: "capitalize" }}>
-                            {newsletter.tester
-                              ? "Tester"
-                              : page === "all"
-                              ? "Newsletter"
-                              : page}
+                          <td style={{ textTransform: 'capitalize' }}>
+                            {newsletter.tester ? 'Tester' : page === 'all' ? 'Newsletter' : page}
                           </td>
-                          <td>
-                            {new Date(newsletter.createdAt).toDateString()}
-                          </td>
+                          <td>{new Date(newsletter.createdAt).toDateString()}</td>
                         </tr>
                       );
                     })}
