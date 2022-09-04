@@ -41,6 +41,7 @@ import EditArticle from './EditArticle';
 import Header from 'components/Headers/Header.js';
 import { toast } from 'react-toastify';
 import SearchBar from '../../components/Searchbar';
+import { mediaServerUrl } from 'config';
 
 const Articles = () => {
   const [openModal, setOpenModal] = useState(false);
@@ -119,15 +120,8 @@ const Articles = () => {
                       <tr>
                         <th scope="row">
                           <Media className="align-items-center">
-                            <a
-                              className="avatar rounded-circle mr-3"
-                              href="#pablo"
-                              onClick={(e) => e.preventDefault()}
-                            >
-                              <img
-                                alt="Article"
-                                src={process.env.REACT_APP_SERVER_MEDIA_URL + article.blog_images}
-                              />
+                            <a className="avatar rounded-circle mr-3" href="#pablo" onClick={(e) => e.preventDefault()}>
+                              <img alt="Article" src={mediaServerUrl + article.blog_images} />
                             </a>
                             <Media>
                               <span className="mb-0 text-sm" title={article.blog_title}>
@@ -139,9 +133,7 @@ const Articles = () => {
                           </Media>
                         </th>
                         <td title={article.blog_desc}>
-                          {article.blog_desc?.length > 30
-                            ? article.blog_desc?.substring(0, 30) + '...'
-                            : article.blog_desc}
+                          {article.blog_desc?.length > 30 ? article.blog_desc?.substring(0, 30) + '...' : article.blog_desc}
                         </td>
                         <td>
                           <Badge color="" className="badge-dot mr-4">
@@ -166,22 +158,14 @@ const Articles = () => {
                             </DropdownToggle>
                             <DropdownMenu className="dropdown-menu-arrow" right>
                               <DropdownItem
-                                onClick={() =>
-                                  window
-                                    .open(`https://passtotrip.com/blog/${article._id}`, '_blank')
-                                    .focus()
-                                }
+                                onClick={() => window.open(`https://passtotrip.com/blog/${article._id}`, '_blank').focus()}
                               >
                                 View
                               </DropdownItem>
                               <DropdownItem href="#pablo" onClick={() => handleEditModal(article)}>
                                 Edit
                               </DropdownItem>
-                              <DropdownItem
-                                href="#pablo"
-                                className="text-danger"
-                                onClick={() => handleDelete(article._id)}
-                              >
+                              <DropdownItem href="#pablo" className="text-danger" onClick={() => handleDelete(article._id)}>
                                 Delete
                               </DropdownItem>
                             </DropdownMenu>
@@ -250,9 +234,7 @@ const Articles = () => {
             </Card>
           </div>
         </Row>
-        {openModal && (
-          <AddArticle openModal={openModal} handleModal={handleModal} getArticles={getArticles} />
-        )}
+        {openModal && <AddArticle openModal={openModal} handleModal={handleModal} getArticles={getArticles} />}
         {editModal && (
           <EditArticle
             openModal={editModal}
